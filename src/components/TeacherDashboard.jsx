@@ -5,6 +5,7 @@ import { TimetableGrid } from './TimetableGrid';
 import { QuestionBankModal } from './QuestionBankModal';
 import { MaterialVaultModal } from './MaterialVaultModal';
 import { CertificateModal } from './CertificateModal';
+import MobileBottomNav from './MobileBottomNav';
 import { 
   UserCheck, 
   CheckCircle2, 
@@ -917,6 +918,19 @@ export const TeacherDashboard = () => {
         </div>
       )}
 
+      {/* ── Pro Mobile Bottom Navigation Bar ── */}
+      <MobileBottomNav
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onStartSession={() => {
+          setShowQrModal(true);
+          const pin = Math.floor(1000 + Math.random() * 9000).toString();
+          setSessionPin(pin);
+          setPinCountdown(120);
+          setPinTimerActive(true);
+          startLiveSession(selectedCourseId, pin, 120);
+        }}
+      />
     </div>
   );
 };

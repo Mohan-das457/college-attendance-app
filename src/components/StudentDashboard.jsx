@@ -6,6 +6,7 @@ import { QuestionBankModal } from './QuestionBankModal';
 import { MaterialVaultModal } from './MaterialVaultModal';
 import { CertificateModal } from './CertificateModal';
 import QRScannerModal from './QRScannerModal';
+import MobileBottomNav from './MobileBottomNav';
 import { 
   Calculator, 
   Camera, 
@@ -803,6 +804,13 @@ export const StudentDashboard = () => {
           </div>
         </div>
       )}
+
+      {/* ── Pro Mobile Bottom Navigation Bar ── */}
+      <MobileBottomNav
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onOpenScanner={() => setShowScannerModal(true)}
+      />
     </div>
   );
 };
