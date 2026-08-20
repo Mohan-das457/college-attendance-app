@@ -1,0 +1,35 @@
+day,time,course_code,subject_name,room,faculty
+Monday,09:10 - 10:10,AI,Artificial Intelligence,NPN106,Mr. Ashok. K
+Monday,10:10 - 11:10,ATCD,Automata Theory & Compiler Design,NPN106,Mr. L. Arul Jaya Prakash
+Monday,11:10 - 12:10,IQT,Quantitative Techniques,NPN106,Dr. Sunku Sreedhar
+Monday,13:00 - 14:00,OE-I,Open Elective - I,NPN105,Faculty OE
+Monday,14:00 - 15:00,SE,Software Engineering,NPN106,Mr. Abdul Jaleel D
+Monday,15:00 - 17:00,HH,Human Values & Ethics,NPN105,Faculty HH
+Tuesday,09:10 - 10:10,ATCD,Automata Theory & Compiler Design,NPN106,Mr. L. Arul Jaya Prakash
+Tuesday,10:10 - 11:10,SE,Software Engineering,NPN106,Mr. Abdul Jaleel D
+Tuesday,11:10 - 12:10,AI,Artificial Intelligence,NPN106,Mr. Ashok. K
+Tuesday,13:00 - 14:00,OE-I,Open Elective - I,NPN105,Faculty OE
+Tuesday,14:00 - 15:00,IQT,Quantitative Techniques,NPN106,Dr. Sunku Sreedhar
+Tuesday,15:00 - 17:00,FS1-Lab,Full Stack Lab (SEC-III),Lab 9,Mr. Naveen V / Mr. Devanolla Suresh
+Wednesday,09:10 - 12:10,AI-Lab,Artificial Intelligence Lab,Lab 9,Mr. Ashok. K / Mr. P Lakshmiramana
+Wednesday,13:00 - 14:00,OE-I,Open Elective - I,NPN105,Faculty OE
+Wednesday,14:00 - 15:00,IIoT,PE-I Industrial IoT,NPN106,Dr. S. Jansi
+Wednesday,15:00 - 16:00,PSOSM,PE-I Optimization & Problem Solving,NPN106,Mr. Devanolla Suresh
+Wednesday,16:00 - 17:00,TPW&IPR,Tech Paper Writing & IPR,NPN106,Mr. Pathan Firoze Khan
+Thursday,09:10 - 10:10,IQT,Quantitative Techniques,NPN106,Dr. Sunku Sreedhar
+Thursday,10:10 - 11:10,FS1(T),Full Stack Theory (SEC-III),NPN106,Mr. Naveen V
+Thursday,11:10 - 12:10,ATCD,Automata Theory & Compiler Design,NPN106,Mr. L. Arul Jaya Prakash
+Thursday,13:00 - 14:00,SE,Software Engineering,NPN106,Mr. Abdul Jaleel D
+Thursday,14:00 - 15:00,APT,Aptitude Training,NPN106,Mr. Ramu
+Thursday,15:00 - 17:00,HH,Human Values & Ethics,NPN105,Faculty HH
+Friday,09:10 - 12:10,SE-Lab,Software Engineering Lab,Lab 9,Mr. Abdul Jaleel D / Mr. Naveen V
+Friday,13:00 - 14:00,IIoT,PE-I Industrial IoT,NPN106,Dr. S. Jansi
+Friday,14:00 - 15:00,PSOSM,PE-I Optimization & Problem Solving,NPN106,Mr. Devanolla Suresh
+Friday,15:00 - 16:00,AI,Artificial Intelligence,NPN106,Mr. Ashok. K
+Friday,16:00 - 17:00,VER,Verbal Ability Training,NPN106,Mr. Rama Mohan T
+Saturday,09:10 - 10:10,IIoT,PE-I Industrial IoT,NPN106,Dr. S. Jansi
+Saturday,10:10 - 11:10,PSOSM,PE-I Optimization & Problem Solving,NPN106,Mr. Devanolla Suresh
+Saturday,11:10 - 12:10,TPW&IPR,Tech Paper Writing & IPR,NPN106,Mr. Pathan Firoze Khan
+Saturday,13:00 - 14:00,CTA-3,Co-Curricular / Activity 3,NPN106,Mr. L. Arul Jaya Prakash
+Saturday,14:00 - 15:00,CTA/TT,Activity / Tutorial,NPN106,Mr. Shankar M
+Saturday,15:00 - 16:00,CTA-3,Co-Curricular / Activity 3,NPN106,Mr. L. Arul Jaya Prakash

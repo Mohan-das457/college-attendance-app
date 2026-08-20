@@ -1,0 +1,10 @@
+id,course_code,course_name,faculty_id,faculty,room,credits,conducted,attended,schedule
+CST301,AI,Artificial Intelligence (AI),TCH-001,Mr. Ashok. K,NPN106,3,28,25,"Mon, Tue, Fri"
+CST302,ATCD,Automata Theory & Compiler Design (ATCD),TCH-002,Mr. L. Arul Jaya Prakash,NPN106,4,30,27,"Mon, Tue, Thu"
+CST303,SE,Software Engineering (SE),TCH-003,Mr. Abdul Jaleel D,NPN106,3,26,24,"Mon, Tue, Thu"
+CST304,IQT,Introduction to Quantitative Techniques (IQT),TCH-004,Dr. Sunku Sreedhar,NPN106,3,25,22,"Mon, Tue, Thu"
+CST305,PE-I IIoT,PE-I Industrial Internet of Things (IIoT),TCH-JANSI,Dr. S. Jansi (Class Teacher),NPN106,3,24,22,"Wed, Fr, Sa"
+CST306,PE-I PSOSM,PE-I Problem Solving & Optimization (PSOSM),TCH-005,Mr. Devanolla Suresh,NPN106,3,24,21,"Wed, Fr, Sa"
+CST307,FS1-Lab,Full Stack Lab (SEC-III FS1-Lab),TCH-NAVEEN,Mr. Naveen V / Mr. Devanolla Suresh / Mr. Shankar M,Lab 9,2,18,16,Tue (3:00 - 5:00 PM)
+CST308,AI-Lab,Artificial Intelligence Lab (AI-Lab),TCH-001,Mr. Ashok. K / Mr. P Lakshmiramana / Mr. Devanolla Suresh,Lab 9,2,20,19,Wed (9:10 AM - 12:10 PM)
+CST309,SE-Lab,Software Engineering Lab (SE-Lab),TCH-003,Mr. Abdul Jaleel D / Mr. Naveen V / Dr. Manikandan R,Lab 9,2,19,18,Fri (9:10 AM - 12:10 PM)
