@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAttendance } from '../context/AttendanceContext';
 import { BunkCalculatorModal } from './BunkCalculatorModal';
 import { TimetableGrid } from './TimetableGrid';
 import { QuestionBankModal } from './QuestionBankModal';
 import { MaterialVaultModal } from './MaterialVaultModal';
 import { CertificateModal } from './CertificateModal';
+import QRScannerModal from './QRScannerModal';
 import { 
   Calculator, 
+  Camera, 
   AlertTriangle, 
   CheckCircle2, 
   Clock, 
@@ -175,6 +177,8 @@ export const StudentDashboard = () => {
     calculateBunkStats,
     submitLeaveRequest,
     studentCheckInWithPin,
+    studentCheckInWithQR,
+    activeSession,
     raiseDispute
   } = useAttendance();
 
@@ -183,11 +187,19 @@ export const StudentDashboard = () => {
   const [activeCourseForCalc, setActiveCourseForCalc] = useState(null);
   const [showCalcModal, setShowCalcModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showScannerModal, setShowScannerModal] = useState(false);
   const [disputeItem, setDisputeItem] = useState(null);
 
-  // PIN Check-in
+  // PIN & QR Check-in State
   const [inputPin, setInputPin] = useState('');
-  const [selectedPinCourse, setSelectedPinCourse] = useState(courses[0]?.id || '');
+  const [selectedPinCourse, setSelectedPinCourse] = useState(() => activeSession?.courseId || courses[0]?.id || '');
+
+  // Auto-sync selected course when a live session starts
+  useEffect(() => {
+    if (activeSession?.courseId && activeSession.active) {
+      setSelectedPinCourse(activeSession.courseId);
+    }
+  }, [activeSession]);
 
   // Leave Form State
   const [leaveCourseId, setLeaveCourseId] = useState(courses[0]?.id || '');
@@ -415,36 +427,88 @@ export const StudentDashboard = () => {
       {/* ── Overview Dashboard ── */}
       {activeTab === 'overview' && (
         <>
-          {/* PIN Check-In */}
+          {/* Live Classroom Check-In (QR & PIN) */}
           <div className="glass-panel" style={{
             padding: '1.25rem', marginBottom: '1.5rem',
-            background: 'linear-gradient(135deg, rgba(99,102,241,0.14), rgba(6,182,212,0.07))',
-            borderColor: 'rgba(99,102,241,0.3)',
+            background: 'linear-gradient(135deg, rgba(99,102,241,0.16), rgba(6,182,212,0.08))',
+            borderColor: 'rgba(99,102,241,0.35)',
+            boxShadow: '0 8px 32px rgba(99,102,241,0.12)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
-                <h4 style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <QrCode size={18} color="var(--primary)" /> Live Classroom Check-In
-                  <span className="badge badge-safe" style={{ fontSize: '0.65rem' }}>🔒 Anti-Proxy</span>
-                </h4>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                  📍 GPS Campus Lock &bull; 📱 Device Bound &bull; 📶 MITS-WIFI
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                    <QrCode size={18} color="var(--primary)" /> Live Classroom Attendance
+                  </h4>
+                  {activeSession?.active && (
+                    <span className="badge badge-safe" style={{ fontSize: '0.68rem', animation: 'pulse 2s infinite' }}>
+                      🔴 LIVE: {activeSession.courseCode || activeSession.courseName}
+                    </span>
+                  )}
+                  <span className="badge" style={{ fontSize: '0.65rem', background: 'rgba(99,102,241,0.12)', color: 'var(--primary)', border: '1px solid rgba(99,102,241,0.3)' }}>
+                    🔒 Anti-Proxy
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.35rem', marginBottom: 0 }}>
+                  📍 Campus Bound &bull; 📸 Auto Course Detection &bull; ⚡ Instant Verification
                 </p>
               </div>
-              <form onSubmit={handlePinCheckIn} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <select value={selectedPinCourse} onChange={e => setSelectedPinCourse(e.target.value)}
-                  className="input-field" style={{ width: 'auto', padding: '0.5rem 0.75rem', fontSize: '0.82rem' }}>
-                  {courses.map(c => <option key={c.id} value={c.id}>{c.code}</option>)}
-                </select>
-                <input type="text" maxLength={4} value={inputPin}
-                  onChange={e => setInputPin(e.target.value.replace(/\D/g, ''))}
-                  placeholder="PIN" className="input-field"
-                  style={{ width: '90px', textAlign: 'center', letterSpacing: '4px', fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-mono)' }}
-                />
-                <button type="submit" className="btn btn-primary" style={{ padding: '0.55rem 1.1rem', fontSize: '0.85rem' }}>
-                  <CheckCircle2 size={15} /> Check In
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                {/* 1. Camera QR Scanner Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowScannerModal(true)}
+                  className="btn"
+                  style={{
+                    background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+                    color: '#ffffff',
+                    border: 'none',
+                    padding: '0.55rem 1.1rem',
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    borderRadius: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 7,
+                    boxShadow: '0 4px 14px rgba(99,102,241,0.4)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Camera size={16} />
+                  Scan QR Code
                 </button>
-              </form>
+
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: 600 }}>OR</span>
+
+                {/* 2. Manual PIN Form */}
+                <form onSubmit={handlePinCheckIn} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <select
+                    value={selectedPinCourse}
+                    onChange={e => setSelectedPinCourse(e.target.value)}
+                    className="input-field"
+                    style={{ width: 'auto', padding: '0.5rem 0.65rem', fontSize: '0.8rem', borderRadius: 10 }}
+                  >
+                    {courses.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.code} {c.id === activeSession?.courseId ? '• (LIVE)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    maxLength={4}
+                    value={inputPin}
+                    onChange={e => setInputPin(e.target.value.replace(/\D/g, ''))}
+                    placeholder="PIN"
+                    className="input-field"
+                    style={{ width: '80px', textAlign: 'center', letterSpacing: '3px', fontWeight: 800, fontSize: '1rem', fontFamily: 'var(--font-mono)', borderRadius: 10 }}
+                  />
+                  <button type="submit" className="btn btn-secondary" style={{ padding: '0.55rem 0.85rem', fontSize: '0.82rem', borderRadius: 10 }}>
+                    <CheckCircle2 size={14} /> PIN
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
 
@@ -672,6 +736,17 @@ export const StudentDashboard = () => {
             </div>
           </div>
         </>
+      )}
+
+      {/* ── QR Scanner Camera Modal ── */}
+      {showScannerModal && (
+        <QRScannerModal
+          activeSession={activeSession}
+          onClose={() => setShowScannerModal(false)}
+          onScanSuccess={(decodedText) => {
+            return studentCheckInWithQR(decodedText);
+          }}
+        />
       )}
 
       {/* ── Bunk Calculator Modal ── */}

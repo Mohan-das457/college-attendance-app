@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAttendance } from '../context/AttendanceContext';
+import { QRCodeSVG } from 'qrcode.react';
 import { TimetableGrid } from './TimetableGrid';
 import { QuestionBankModal } from './QuestionBankModal';
 import { MaterialVaultModal } from './MaterialVaultModal';
@@ -48,7 +49,10 @@ export const TeacherDashboard = () => {
     deleteAnnouncement,
     sessionHistory,
     disputes,
-    resolveDispute
+    resolveDispute,
+    startLiveSession,
+    endLiveSession,
+    activeSession
   } = useAttendance();
 
   const [activeTab, setActiveTab] = useState('roster'); // 'roster' | 'certificates' | 'analytics' | 'announcements' | 'timetable' | 'qbank' | 'ppt'
@@ -100,12 +104,17 @@ export const TeacherDashboard = () => {
   const generateNewPin = () => {
     const pin = Math.floor(1000 + Math.random() * 9000).toString();
     setSessionPin(pin);
-    setPinCountdown(60);
+    setPinCountdown(120);
     setPinTimerActive(true);
+    startLiveSession(selectedCourseId, pin, 120);
   };
 
   const startSession = () => {
-    generateNewPin();
+    const pin = Math.floor(1000 + Math.random() * 9000).toString();
+    setSessionPin(pin);
+    setPinCountdown(120);
+    setPinTimerActive(true);
+    startLiveSession(selectedCourseId, pin, 120);
     setShowQrModal(true);
   };
 
@@ -783,90 +792,125 @@ export const TeacherDashboard = () => {
         </>
       )}
 
-      {/* Live PIN Session Modal */}
+      {/* Live QR & PIN Session Modal */}
       {showQrModal && (
-        <div className="modal-overlay" style={{ background: 'rgba(0,0,0,0.9)' }}>
+        <div className="modal-overlay" style={{ background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(10px)', zIndex: 1200 }}>
           <div style={{
-            background: 'linear-gradient(135deg, #0f1729, #090d16)',
-            border: '1px solid rgba(99,102,241,0.4)',
+            background: 'linear-gradient(135deg, #0f172a, #070a12)',
+            border: '1px solid rgba(99,102,241,0.45)',
             borderRadius: '24px',
-            padding: '2.5rem 2rem',
-            width: '100%', maxWidth: '480px',
+            padding: '2rem',
+            width: '100%', maxWidth: '520px',
             textAlign: 'center',
-            boxShadow: '0 0 80px rgba(99,102,241,0.25), 0 30px 60px rgba(0,0,0,0.8)',
+            boxShadow: '0 0 100px rgba(99,102,241,0.3), 0 30px 70px rgba(0,0,0,0.9)',
             position: 'relative',
           }}>
-            <button onClick={() => { setShowQrModal(false); setPinTimerActive(false); }}
-              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
-              <X size={20} />
+            <button onClick={() => { setShowQrModal(false); setPinTimerActive(false); endLiveSession(); }}
+              style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'rgba(255,255,255,0.06)', border: 'none', borderRadius: '8px', width: 32, height: 32, cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <X size={18} />
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <div style={{ padding: '0.5rem', borderRadius: '10px', background: 'rgba(99,102,241,0.15)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+              <div style={{ padding: '0.4rem', borderRadius: '10px', background: 'rgba(99,102,241,0.15)' }}>
                 <QrCode size={20} color="var(--primary)" />
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Live Classroom Session</h3>
-              <span className="badge badge-safe" style={{ fontSize: '0.65rem' }}>🔴 LIVE</span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>Classroom Attendance Session</h3>
+              <span className="badge badge-safe" style={{ fontSize: '0.65rem' }}>🔴 LIVE SESSION</span>
             </div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>
-              {activeCourse?.name} &bull; Show PIN on projector for students to check in
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
+              <strong style={{ color: 'var(--text-primary)' }}>{activeCourse?.name}</strong> ({activeCourse?.code})
             </p>
 
-            {/* Big PIN Display */}
+            {/* Main Projector QR Code Card */}
             <div style={{
-              background: 'rgba(255,255,255,0.04)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))',
               border: '2px solid rgba(99,102,241,0.4)',
-              borderRadius: '20px', padding: '1.5rem',
-              marginBottom: '1.5rem',
-              animation: 'countdownPulse 2s ease-in-out infinite'
+              borderRadius: '20px',
+              padding: '1.5rem 1rem',
+              marginBottom: '1.25rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.4)'
             }}>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                Session PIN Code
+              {/* Real QR Code container */}
+              <div style={{
+                background: '#ffffff',
+                padding: '12px',
+                borderRadius: '16px',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                marginBottom: '1rem',
+                display: 'inline-flex'
+              }}>
+                <QRCodeSVG
+                  value={JSON.stringify({
+                    type: 'ATTENDTRACK_SESSION',
+                    courseId: activeCourse?.id || '23CST108',
+                    courseCode: activeCourse?.code || '23CST108',
+                    pin: sessionPin,
+                    time: Date.now()
+                  })}
+                  size={190}
+                  level="H"
+                  includeMargin={false}
+                />
+              </div>
+
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.2rem' }}>
+                Or Enter PIN Manually
               </div>
               <div style={{
-                fontSize: '4rem', fontWeight: 900, letterSpacing: '0.3em',
+                fontSize: '2.8rem', fontWeight: 900, letterSpacing: '0.25em',
                 fontFamily: 'var(--font-mono)',
                 background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                textShadow: 'none',
+                lineHeight: 1.1,
+                marginBottom: '0.4rem'
               }}>
                 {sessionPin}
               </div>
+
               {/* Countdown ring */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginTop: '0.75rem' }}>
-                <Timer size={14} color={pinCountdown <= 10 ? 'var(--danger)' : 'var(--text-dim)'} />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <Timer size={14} color={pinCountdown <= 20 ? 'var(--danger)' : 'var(--text-dim)'} />
                 <span style={{
-                  fontSize: '0.85rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
-                  color: pinCountdown <= 10 ? 'var(--danger)' : 'var(--text-muted)'
+                  fontSize: '0.8rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
+                  color: pinCountdown <= 20 ? 'var(--danger)' : 'var(--text-muted)'
                 }}>
-                  {pinTimerActive ? `Expires in ${pinCountdown}s` : 'Timer inactive'}
+                  {pinTimerActive ? `PIN Active (${pinCountdown}s remaining)` : 'Session active'}
                 </span>
               </div>
             </div>
 
-            {/* Session Summary */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            {/* Session Turnout Stats */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.6rem', marginBottom: '1.25rem' }}>
               {[
                 { label: 'Present', value: presentCount, color: 'var(--safe)' },
                 { label: 'Absent', value: absentCount, color: 'var(--danger)' },
                 { label: 'Turnout', value: `${todayPct}%`, color: 'var(--primary)' },
               ].map(({ label, value, color }) => (
-                <div key={label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '0.75rem' }}>
+                <div key={label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '0.6rem' }}>
                   <div style={{ fontSize: '0.65rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color, marginTop: '0.25rem' }}>{value}</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color, marginTop: '0.15rem' }}>{value}</div>
                 </div>
               ))}
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button onClick={generateNewPin} className="btn btn-secondary" style={{ flex: 1, fontSize: '0.85rem' }}>
-                <RefreshCw size={15} /> New PIN
+                <RefreshCw size={14} /> Refresh Code
               </button>
               <button
-                onClick={() => { markSessionAttendance(selectedCourseId, attendanceMap); setShowQrModal(false); setPinTimerActive(false); }}
+                onClick={() => {
+                  markSessionAttendance(selectedCourseId, attendanceMap);
+                  setShowQrModal(false);
+                  setPinTimerActive(false);
+                  endLiveSession();
+                }}
                 className="btn btn-primary" style={{ flex: 2, fontSize: '0.85rem' }}
               >
-                <Save size={15} /> Save &amp; Close Session
+                <Save size={14} /> Save &amp; Close Session
               </button>
             </div>
           </div>

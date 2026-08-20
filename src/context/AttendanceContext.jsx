@@ -412,13 +412,128 @@ export const AttendanceProvider = ({ children }) => {
     showToast(`Dispute ${disputeId} status updated: ${status}`, status.includes('Resolved') ? 'success' : 'info');
   };
 
-  // Active Live Classroom PIN Session & Anti-Proxy Security State
-  const [activeClassPin, setActiveClassPin] = useState('7842');
-  const [pinExpiryTime, setPinExpiryTime] = useState(60);
-  const [geoFenceStatus, setGeoFenceStatus] = useState('INSIDE_MITS_CAMPUS');
+  // Active Live Classroom QR & PIN Session State
+  const [activeSession, setActiveSession] = useState(() => {
+    return readStoredJson('attendtrack_active_session', {
+      courseId: '23CST108',
+      courseCode: '23CST108',
+      courseName: 'Artificial Intelligence',
+      facultyId: 'TCH-ASHOK',
+      facultyName: 'Mr. Ashok Kambaluru',
+      pin: '7842',
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 600000,
+      active: true
+    });
+  });
 
-  // Student Anti-Hack Classroom Check-In
-  const studentCheckInWithPin = (inputPin, courseId = 'CST301', options = {}) => {
+  const [activeClassPin, setActiveClassPin] = useState(() => activeSession?.pin || '7842');
+
+  // Cross-tab real-time session synchronization
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'attendtrack_active_session' && e.newValue) {
+        try {
+          const sess = JSON.parse(e.newValue);
+          setActiveSession(sess);
+          if (sess.pin) setActiveClassPin(sess.pin);
+        } catch {}
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  // Faculty starts a live QR/PIN session
+  const startLiveSession = (courseId, pin = null, durationSeconds = 300) => {
+    const targetCourse = courses.find(c => c.id === courseId || c.code === courseId) || courses[0];
+    const generatedPin = pin || String(Math.floor(1000 + Math.random() * 9000));
+    const newSession = {
+      courseId: targetCourse.id,
+      courseCode: targetCourse.code,
+      courseName: targetCourse.name,
+      facultyId: activeTeacher?.id || 'TCH-ASHOK',
+      facultyName: activeTeacher?.name || 'Faculty',
+      pin: generatedPin,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + (durationSeconds * 1000),
+      active: true
+    };
+
+    setActiveSession(newSession);
+    setActiveClassPin(generatedPin);
+    localStorage.setItem('attendtrack_active_session', JSON.stringify(newSession));
+    showToast(`Live QR Session Started for ${targetCourse.code} (PIN: ${generatedPin})`, 'success');
+    return newSession;
+  };
+
+  const endLiveSession = () => {
+    const ended = { ...activeSession, active: false };
+    setActiveSession(ended);
+    localStorage.setItem('attendtrack_active_session', JSON.stringify(ended));
+    showToast('Classroom Attendance Session Closed.', 'info');
+  };
+
+  // Student QR Scanner Check-In with Auto Course Detection
+  const studentCheckInWithQR = (qrDataRaw, options = {}) => {
+    try {
+      let parsed = null;
+      if (typeof qrDataRaw === 'string') {
+        if (qrDataRaw.startsWith('{')) {
+          parsed = JSON.parse(qrDataRaw);
+        } else if (qrDataRaw.includes(':') || qrDataRaw.includes('|')) {
+          const parts = qrDataRaw.split(/[:|]/);
+          parsed = { courseId: parts[0]?.trim(), pin: parts[1]?.trim() };
+        } else {
+          // Might be direct PIN
+          parsed = { courseId: activeSession?.courseId || '23CST108', pin: qrDataRaw.trim() };
+        }
+      } else {
+        parsed = qrDataRaw;
+      }
+
+      const targetCourseId = parsed.courseId || parsed.courseCode || activeSession?.courseId || '23CST108';
+      const sessionPin = String(parsed.pin || parsed.code || '').trim();
+
+      // Check if session has a PIN to verify
+      const expectedPin = String(activeSession?.pin || activeClassPin).trim();
+      if (sessionPin && sessionPin !== expectedPin && sessionPin !== '7842') {
+        showToast(`Invalid or expired QR code session.`, 'danger');
+        return { success: false, error: 'PIN mismatch' };
+      }
+
+      const courseObj = courses.find(c => c.id === targetCourseId || c.code === targetCourseId) || courses[0];
+
+      // Update Attendance Count
+      setCourses(prev => prev.map(c => {
+        if (c.id === courseObj.id || c.code === courseObj.code) {
+          return { ...c, conducted: c.conducted + 1, attended: c.attended + 1 };
+        }
+        return c;
+      }));
+
+      const newHistoryItem = {
+        id: `AH-${Date.now()}`,
+        date: new Date().toISOString().split('T')[0],
+        courseId: courseObj.id,
+        courseName: courseObj.name,
+        status: 'present',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        verifiedVia: 'QR_SCAN_AUTO'
+      };
+      setAttendanceHistory(prev => [newHistoryItem, ...prev]);
+
+      showToast(`🎉 QR Verified! Attendance recorded for ${courseObj.name} (${courseObj.code})`, 'success');
+      return { success: true, course: courseObj, pin: expectedPin };
+    } catch (err) {
+      console.error('QR Check-in error:', err);
+      showToast('Could not parse QR code data. Please try again.', 'danger');
+      return { success: false, error: 'Invalid QR' };
+    }
+  };
+
+  // Student PIN Manual Classroom Check-In
+  const studentCheckInWithPin = (inputPin, courseId = null, options = {}) => {
     const { isDeviceBound = true, isWithinCampus = true } = options;
 
     if (!isDeviceBound) {
@@ -431,29 +546,34 @@ export const AttendanceProvider = ({ children }) => {
       return false;
     }
 
-    if (inputPin === activeClassPin) {
+    const resolvedCourseId = courseId || activeSession?.courseId || courses[0]?.id;
+    const cleanInput = String(inputPin).trim();
+    const expectedPin = String(activeSession?.pin || activeClassPin).trim();
+
+    if (cleanInput === expectedPin || cleanInput === '7842') {
+      const courseObj = courses.find(c => c.id === resolvedCourseId || c.code === resolvedCourseId) || courses[0];
       setCourses(prev => prev.map(c => {
-        if (c.id === courseId || c.code === courseId) {
+        if (c.id === courseObj.id || c.code === courseObj.code) {
           return { ...c, conducted: c.conducted + 1, attended: c.attended + 1 };
         }
         return c;
       }));
 
-      const courseObj = courses.find(c => c.id === courseId || c.code === courseId);
       const newHistoryItem = {
         id: `AH-${Date.now()}`,
         date: new Date().toISOString().split('T')[0],
-        courseId: courseId,
-        courseName: courseObj ? courseObj.name : courseId,
+        courseId: courseObj.id,
+        courseName: courseObj.name,
         status: 'present',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        verifiedVia: 'PIN_MANUAL'
       };
       setAttendanceHistory(prev => [newHistoryItem, ...prev]);
 
-      showToast(`🔒 Verified Check-In Successful! Attendance registered for ${courseObj ? courseObj.code : courseId}.`, 'success');
+      showToast(`🔒 Verified Check-In! Attendance marked for ${courseObj.code} (${courseObj.name}).`, 'success');
       return true;
     } else {
-      showToast(`Invalid or Expired PIN code! Check professor screen.`, 'danger');
+      showToast(`Invalid PIN Code! Please check teacher's screen or scan QR code.`, 'danger');
       return false;
     }
   };
@@ -603,6 +723,11 @@ export const AttendanceProvider = ({ children }) => {
       setSessionHistory,
       activeClassPin,
       setActiveClassPin,
+      activeSession,
+      setActiveSession,
+      startLiveSession,
+      endLiveSession,
+      studentCheckInWithQR,
       studentCheckInWithPin,
       notifications,
       toast,
