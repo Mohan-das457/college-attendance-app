@@ -605,8 +605,8 @@ export const StudentDashboard = () => {
             </div>
           )}
 
-          {/* Main Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: '1.5rem', alignItems: 'start' }}>
+          {/* Main Grid — 2 cols desktop / 1 col mobile */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) clamp(260px, 30%, 340px)', gap: '1.5rem', alignItems: 'start' }} className="overview-main-grid">
 
             {/* Subject Cards */}
             <div>
@@ -684,27 +684,51 @@ export const StudentDashboard = () => {
 
               {/* Today's Schedule */}
               <div className="glass-panel" style={{ padding: '1.25rem' }}>
-                <h3 style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                <h3 style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', fontWeight: 700 }}>
                   <Clock size={17} color="var(--accent-cyan)" /> Today's Schedule
+                  <span style={{ fontSize: '0.68rem', marginLeft: 'auto', color: 'var(--text-dim)', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
+                    {new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </span>
                 </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                  {timetable.map(slot => (
-                    <div key={slot.id} style={{
-                      padding: '0.7rem 0.85rem', borderRadius: '10px',
-                      background: 'rgba(255,255,255,0.025)',
-                      borderLeft: `3px solid ${slot.status === 'Present' ? 'var(--safe)' : slot.status === 'Absent' ? 'var(--danger)' : 'var(--primary)'}`,
-                      transition: 'all 0.2s ease'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.2rem' }}>
-                        <span>{slot.time}</span>
-                        <span style={{ fontWeight: 700, color: slot.status === 'Present' ? 'var(--safe)' : slot.status === 'Absent' ? 'var(--danger)' : 'var(--warning)' }}>
-                          {slot.status}
-                        </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  {timetable.map((slot, i) => {
+                    const statusColor = slot.status === 'Present' ? 'var(--safe)'
+                      : slot.status === 'Absent' ? 'var(--danger)'
+                      : 'var(--accent-amber)';
+                    const statusBg = slot.status === 'Present' ? 'rgba(16,185,129,0.08)'
+                      : slot.status === 'Absent' ? 'rgba(239,68,68,0.08)'
+                      : 'rgba(245,158,11,0.08)';
+                    return (
+                      <div key={slot.id} style={{
+                        borderRadius: 12,
+                        background: statusBg,
+                        border: `1px solid ${statusColor}30`,
+                        padding: '0.7rem 0.85rem',
+                        borderLeft: `3px solid ${statusColor}`,
+                        transition: 'all 0.2s ease'
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                            {slot.time}
+                          </span>
+                          <span style={{ fontSize: '0.66rem', fontWeight: 800, color: statusColor, background: `${statusColor}15`, padding: '2px 7px', borderRadius: 6 }}>
+                            {slot.status}
+                          </span>
+                        </div>
+                        <h5 style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1.3, margin: '0 0 0.15rem 0' }}>
+                          {slot.courseName}
+                        </h5>
+                        <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', margin: 0 }}>
+                          {slot.room} · {slot.type}
+                        </p>
                       </div>
-                      <h5 style={{ fontSize: '0.85rem', lineHeight: 1.3 }}>{slot.courseName}</h5>
-                      <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>{slot.room} · {slot.type}</p>
-                    </div>
-                  ))}
+                    );
+                  })}
+                  {timetable.length === 0 && (
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textAlign: 'center', padding: '1rem 0' }}>
+                      No classes today 🎉
+                    </p>
+                  )}
                 </div>
               </div>
 

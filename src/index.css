@@ -446,6 +446,20 @@ h1, h2, h3, h4, h5, h6 {
   animation: cardReveal 0.3s ease-out both;
 }
 
+/* Overview Page: Subject cards + Today Schedule side by side on desktop, stacked on mobile */
+.overview-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(260px, 30%, 340px);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .overview-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* Skeleton Loader */
 .skeleton {
   background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
