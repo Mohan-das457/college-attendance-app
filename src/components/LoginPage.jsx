@@ -10,7 +10,7 @@ const ROLES = [
 
 const DEMO = {
   student: { email: '24691a2899@mits.ac.in', password: 'mohan123' },
-  teacher: { email: 'rajesh.iyer@mits.edu', password: 'rajesh123' },
+  teacher: { email: 'ashokkambaluru@mits.ac.in', password: 'ashok123' },
   admin:   { email: 'admin@mits.edu', password: 'admin123' },
 };
 

@@ -38,8 +38,8 @@ export const AttendanceProvider = ({ children }) => {
   // Teachers Roster — always use INITIAL_TEACHERS to avoid stale localStorage data
   const [teachers, setTeachers] = useState(() => {
     const parsed = readStoredJson('attendtrack_teachers', INITIAL_TEACHERS);
-    // if old data has passkey instead of password, reset to initial
-    if (parsed[0] && parsed[0].passkey && !parsed[0].password) {
+    // if old data has older mock faculty without ashokkambaluru, reset to initial
+    if (!parsed || !parsed.some(t => t.id === 'TCH-ASHOK')) {
       localStorage.removeItem('attendtrack_teachers');
       return INITIAL_TEACHERS;
     }
@@ -48,7 +48,7 @@ export const AttendanceProvider = ({ children }) => {
 
   // Active Teacher Account
   const [activeTeacherId, setActiveTeacherId] = useState(() => {
-    return localStorage.getItem('attendtrack_active_teacher') || 'TCH-JANSI';
+    return localStorage.getItem('attendtrack_active_teacher') || 'TCH-ASHOK';
   });
 
   // Active Student Account (persists per device / session)
@@ -196,16 +196,31 @@ export const AttendanceProvider = ({ children }) => {
 
   // Courses Database
   const [courses, setCourses] = useState(() => {
-    return readStoredJson('attendtrack_courses', INITIAL_COURSES);
+    const parsed = readStoredJson('attendtrack_courses', INITIAL_COURSES);
+    if (!parsed || !parsed.some(c => c.id === '23CST108')) {
+      localStorage.removeItem('attendtrack_courses');
+      return INITIAL_COURSES;
+    }
+    return parsed;
   });
 
   // Timetables
   const [timetable, setTimetable] = useState(() => {
-    return readStoredJson('attendtrack_timetable', TODAY_TIMETABLE);
+    const parsed = readStoredJson('attendtrack_timetable', TODAY_TIMETABLE);
+    if (!parsed || !parsed.some(t => t.courseId === '23CST108')) {
+      localStorage.removeItem('attendtrack_timetable');
+      return TODAY_TIMETABLE;
+    }
+    return parsed;
   });
 
   const [weeklyTimetable, setWeeklyTimetable] = useState(() => {
-    return readStoredJson('attendtrack_weekly_tt', WEEKLY_TIMETABLE);
+    const parsed = readStoredJson('attendtrack_weekly_tt', WEEKLY_TIMETABLE);
+    if (!parsed || !parsed.some(w => w.day === 'Monday' && w.slots.some(s => s.courseCode === '23CST108'))) {
+      localStorage.removeItem('attendtrack_weekly_tt');
+      return WEEKLY_TIMETABLE;
+    }
+    return parsed;
   });
 
   // Question Banks Repository

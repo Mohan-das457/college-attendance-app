@@ -1,0 +1,170 @@
+{
+    studName : 'NATARAJANBMOHAN',
+
+    isFirstTime : 'false',
+
+    isAuthenticated : true,
+    
+    isStudent : 'student',
+
+    instituteName : 'Madanapalle Institute of Technology and Science',
+
+    contactUs : '',
+
+        toolbarDetails :
+        {
+                width:'95%',
+                cls:"hmenu",
+                height:'100%',
+                id:'leftSideBar',
+                vertical:true,
+                renderTo:'dynatbar',
+                style:{'margin-left':'5%', 'border-radius': '15px', padding:0},
+                items : [   
+                            {
+                              xtype:'hiddenfield'  ,
+                              id:'personType',
+                              value:'student'
+                            },
+                            {
+                              xtype:'hiddenfield'  ,
+                              id:'studentId',
+                              value:'22612'
+                            },
+                            {
+                                    scale:'medium',
+                                    iconCls:"profilebtnimg",
+                                    cls:'.overOnline',
+                                    iconAlign:"left",
+                                    id:"profile",
+                                    text:'Dashboard',
+                                    handler :Advaya.Gms.Student.handler.profile,
+                                    params : {
+                                            id:'profileBtn',
+                                            req:'./gemsonline-student/dashboard.action?actionType=view'
+                                        }
+
+                            }
+                                                                                       ,{
+                                    scale:'medium',
+                                    cls:'.overOnline',
+                                    id:"progressReport",
+                                    iconCls:"progressbtnimg",
+                                    text:'Progress Report',
+                                    handler:Advaya.App.Parent.instance.processForm,
+                                    params:{
+                                        inst:Advaya.Gms.Student.instance,
+                                        action:"loadProfileWindow", 
+                                        responseHandler:"setProgressReportForm",
+                                        req:"./gemsonline-student/progressReport.action?"
+                                    }
+                                }
+                                                                                                                
+                                                                                 ,{
+                                        scale:'medium',
+                                        cls:'.overOnline',
+                                        id:"consollidatedView",
+                                        iconCls:"consollidatedimg",
+                                        text:'Transcript',
+                                        handler : Advaya.Gms.Student.instance.getStudentResults
+                                    }
+                                                                                                          ,{
+                                    scale:'medium',
+                                    cls:'.overOnline',
+                                    id:"fees",
+                                    iconCls:"feesimg",
+                                    text:'Fees',
+                                    handler : Advaya.App.Parent.instance.processForm,
+                                    params : {
+                                        form:true,
+                                        inst:Advaya.Gms.Student.instance,
+                                        action:"loadStudentsForm",
+                                        responseHandler:"setStudentData",
+                                        req:"./fees/availPay.action?type=online&stdent.usn=24691A2899"
+                                    }
+                                }
+                                                                                         ,{
+                                    scale:'medium',
+                                    cls:'.overOnline',
+                                    id:"feedback",
+                                    iconCls:"registrationbtnimg",
+                                    text:'Feedback',
+                                    handler : Advaya.App.Parent.instance.processForm,
+                                    params : {
+                                        inst:Advaya.Gms.StudentFeedBack.instance,
+                                        action:'loadStudentFeedBackForm',
+                                        req :'./feedback/getStudentFeedbackList.action?actionType=alertFB&batch.id=3748&canPrintExamApp=false',
+                                     
+                                        responseHandler :'setStudentFeedBackForm'
+                                    }
+                                }
+                                                                                     ,{
+                                    scale:'medium',
+                                    iconCls:"mentorbtnimg",
+                                    cls:'.overOnline',
+                                    iconAlign:"left",
+                                    id:"placement",
+                                    text:'Placement',
+                                    handler : Advaya.App.Parent.instance.processForm,
+                                    params:{
+                                        inst:Advaya.Gms.Placement.instance,
+                                        req:'./studentPlacement/getStudentPlacement.action?pabo.actionType=success',
+                                        responseHandler :'setData',
+                                        action:'loadForm',
+                                    }
+                              },
+                                {
+                                    scale:'medium',
+                                    cls:'.overOnline',
+                                    id:"students",
+                                    iconCls:"profilebtnimg",
+                                    text:'Certificate Request',
+                                    handler : Advaya.App.Parent.instance.processForm,
+                                    params : {
+                                        form:true,
+                                        inst:Advaya.Gms.Student.instance,
+                                        action:"loadStudentsForm",
+                                        responseHandler:"setStudentData",
+                                        req:"./gemsonline-student/studentCertificateRequest.action?id=22612",
+                                    }
+                                },
+                                                           {
+                                xtype:'tbfill',
+                                id:'tbFillBAr',
+                                cls:'tbCls'
+
+                            },
+                            {
+                                    xtype:'image',
+                                    id:'profileImage',
+                                    cls:'profDetails',
+                                    style:{height:'18%'},
+                                                                            src:'./gemsonline-student/loadImage.action?'
+                                                                        
+                            },
+                            {
+                                    id:'profileName',
+                                    xtype:'displayfield',
+                                    cls:'profName',
+                                    labelWidth:100,
+                                    value:'<span style = "font-size:11px;  color:black">NATARAJANBMOHAN</span>'
+                            },
+                            {
+                                    id:'profileUsn',
+                                    xtype:'displayfield',
+                                    cls:'profUsn',
+                                    labelWidth:100,
+                                    value:'<span style = "font-size:11px;  color:black">24691A2899</span>'
+                            },
+                     
+                                                        {
+                                    id:'profileLastLogin',
+                                    xtype:'displayfield',
+                                                                        labelWidth:70,
+                                    cls:'profUsn',
+                                    value:'<span style = "font-size:11px;  color:black">Last Login: 20/Aug/2026</span>'
+                            }
+                                                    ]
+
+            }
+}

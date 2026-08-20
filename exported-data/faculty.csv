@@ -1,6 +1,10 @@
-id,name,designation,department,email,password,assigned_courses,avatar
-TCH-JANSI,Dr. S. Jansi,Associate Professor & Class Teacher III CST B,Computer Science & Technology,s.jansi@mits.ac.in,jansi123,CST305,https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250
-TCH-001,Mr. Ashok. K,Assistant Professor (AI Faculty),Computer Science & Technology,ashok.k@mits.ac.in,ashok123,CST301|CST308,https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=250
-TCH-002,Mr. L. Arul Jaya Prakash,Assistant Professor (ATCD Lead),Computer Science & Technology,arul.jayaprakash@mits.ac.in,arul123,CST302,https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=250
-TCH-003,Mr. Abdul Jaleel D,Assistant Professor (SE Lead),Computer Science & Technology,abdul.jaleel@mits.ac.in,abdul123,CST303|CST309,https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=250
-TCH-004,Dr. Sunku Sreedhar,Professor (IQT Faculty),Computer Science & Technology,sunku.sreedhar@mits.ac.in,sunku123,CST304,https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250
+id,name,title,department,email,assigned_courses
+TCH-ASHOK,Mr. Ashok Kambaluru,Assistant Professor (Artificial Intelligence Faculty),Computer Science & Technology,ashokkambaluru@mits.ac.in,"23CST108,23CST205"
+TCH-ARUL,Mr. L. Arul Jayaprakash,Assistant Professor (Automata & Compiler Design Lead),Computer Science & Technology,aruljayaprakashl@mits.ac.in,23CST107
+TCH-JALEEL,Mr. Abdul Jaleel D,Assistant Professor (Software Engineering Faculty),Computer Science & Technology,abduljaleeld@mits.ac.in,"23CST109,23CST206"
+TCH-SREEDHAR,Dr. Sunku Sreedhar,Professor (Quantum Technologies Faculty),Computer Science & Technology,drsreedhars@mits.ac.in,23PHY102
+TCH-FIROZE,Mr. Pathan Firoze Khan,Assistant Professor (Technical Paper Writing & IPR),Humanities & Sciences,firozekhanp@mits.ac.in,23ENG901
+TCH-SURESH,Mr. Devanolla Suresh,Assistant Professor (Online Social Media Security),Computer Science & Technology,sureshd@mits.ac.in,23CST4M01
+TCH-SAIKIRAN,Mr. Sai Kiran N,Assistant Professor (Internet of Things),Computer Science & Technology,saikirann@mits.ac.in,23CST4M02
+TCH-CHOLLANGI,Mr. Chollangi Venkataramu,Assistant Professor (Quantitative Aptitude),Training & Placement,venkataramuch@mits.ac.in,APPTITUDE
+TCH-RAMA,Mr. Rama Mohan T,Assistant Professor (Verbal Ability),Training & Placement,ramamohant@mits.ac.in,VERBAL

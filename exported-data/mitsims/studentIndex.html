@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html style="height:100%">
+    <head>
+        <title>GEMS - Grade Evaluation Management System</title>
+        <link rel="shortcut icon" href="img/advaya_ico.png"/>
+<!--        <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />-->
+        <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all-gray.css"/>
+        <!-- Advaya CSS file  -->
+        <link rel="stylesheet" type="text/css" href="css/gems-online.css" />
+
+        <style type="text/css">
+
+        </style>
+
+        <script type="text/javascript" src="./yui/build/yuiloader/yuiloader-min.js"></script> 
+        <script type="text/javascript" src="./yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+        <script type="text/javascript" src="./yui/build/connection/connection-min.js"></script>
+
+        <script type="text/javascript" src="./extjs/bootstrap.js"></script>
+<!--        <script type="text/javascript" src="./extjs/ext-all.js"></script>-->
+
+        <script type="text/javascript" src="./script/common/register.js"></script>
+        <script type="text/javascript" src="./script/conn/connection.js"></script>
+        <script type="text/javascript" src="./script/common/parent.js"></script>
+        <script type="text/javascript" src="./script/common/message.js"></script>
+        <script type="text/javascript" src="./script/gems-online/common/initiator.js"></script>
+        <script type="text/javascript" src="./script/common/person.js"></script>
+        <script type="text/javascript" src="./script/password/passwordStrength.js"></script>
+
+        <script type="text/javascript" src="./script/common/grid.js"></script>
+        <script type="text/javascript" src="./script/common/menubar.js"></script>
+        <script type="text/javascript" src="./script/gems-online/students.js"></script>
+        <script type="text/javascript" src="./script/studentFeedBack.js"></script>
+        <script type="text/javascript" src="./script/fees.js"></script>
+        <script type="text/javascript" src="./script/userfeedback.js"></script>
+        <script type="text/javascript" src="./script/placement.js"></script>
+
+        <script type="text/javascript" >
+
+            function onWindowLoad() {
+                new Advaya.App.Initiator();
+            }
+
+
+            YAHOO.util.Event.addListener(window, "load", onWindowLoad);
+        </script>
+    </head>
+    <body style="width:100%;height:100%;">
+        <div id="doc3" class="yui-t2" style="width:100%;height:100%;margin-left: auto;margin-right: auto">
+            <div id="header" style="height:8%;">
+                <div class="logo">
+                    <div id="logo_content">
+                        <table>
+                            <tr>
+                                <td><img src="img/customer_logo.jpg" height="32px" title="" /></td>
+                                <td><a href="#"><span id="instituteName">&nbsp</span></a></td>
+                            </tr>
+                        </table>	
+                    </div>
+                </div>
+                <div id="authentication" >
+                    <div id="logged_out">
+                        <table>
+                            <tr>
+                                <td colspan="2" align="right" style="letter-spacing:0.1em;color:lightgreen"></td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td rowspan="2"><img src="img/gems_logo.png" height="35px" title="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><a href="#" onclick=Advaya.Gms.Student.handler.profile()><span id="studentName">&nbsp</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+                                <td><a href="#" onclick=Advaya.Gms.Student.handler.changePassword()>Change Password</a>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+                                <td><a href="#" onclick=Advaya.Gms.UserFeedback.handler.getFeedBack()><span id="contactUs">&nbsp</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+                                <td><a href="#" onclick=Advaya.Gms.Student.handler.logoutUrl()>LOGOUT</a></td>
+                                <td>&nbsp;&nbsp;</td>
+                            </tr>
+                        </table>	
+                    </div>
+                </div>
+            </div>      
+
+            <div id="content_area" style="height:84%;background:#181818;width:100%; padding: 10px;  border-bottom: 1px solid #333; border-top:  1px solid #333;">
+                <div class="tbarcontent" id="dynatbar" style="width:15%; height:100%; float:left; background:#181818"></div>
+                <div class="content" id="dynacontent" style="width:84%;height:100%; overflow-x : hidden; float:left; border-radius: 15px 15px 15px 15px;"></div>
+                <div id="dynapopup"></div>
+            </div>
+
+            <div id="footer" style="width:100%;height:8%;">
+                <div>
+                     <div><img src="img/advaya.png" height="55px" style="padding:5px;"/><label style="padding:30px;color:#889096;float:right">@ 2012 Advaya Softech. All Rights Reserved.</label></div>
+                </div>			        
+            </div> 
+
+            <div id="lt" style="display:hidden">
+                <form name="studentLogout" id="logoutform" action="./studentLogin/studentLogout.action" method="post">
+
+                </form>
+            </div>           
+        </div>
+    </body>
+</html>

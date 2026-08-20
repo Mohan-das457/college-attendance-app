@@ -1,10 +1,12 @@
 id,course_code,course_name,faculty_id,faculty,room,credits,conducted,attended,schedule
-CST301,AI,Artificial Intelligence (AI),TCH-001,Mr. Ashok. K,NPN106,3,28,25,"Mon, Tue, Fri"
-CST302,ATCD,Automata Theory & Compiler Design (ATCD),TCH-002,Mr. L. Arul Jaya Prakash,NPN106,4,30,27,"Mon, Tue, Thu"
-CST303,SE,Software Engineering (SE),TCH-003,Mr. Abdul Jaleel D,NPN106,3,26,24,"Mon, Tue, Thu"
-CST304,IQT,Introduction to Quantitative Techniques (IQT),TCH-004,Dr. Sunku Sreedhar,NPN106,3,25,22,"Mon, Tue, Thu"
-CST305,PE-I IIoT,PE-I Industrial Internet of Things (IIoT),TCH-JANSI,Dr. S. Jansi (Class Teacher),NPN106,3,24,22,"Wed, Fr, Sa"
-CST306,PE-I PSOSM,PE-I Problem Solving & Optimization (PSOSM),TCH-005,Mr. Devanolla Suresh,NPN106,3,24,21,"Wed, Fr, Sa"
-CST307,FS1-Lab,Full Stack Lab (SEC-III FS1-Lab),TCH-NAVEEN,Mr. Naveen V / Mr. Devanolla Suresh / Mr. Shankar M,Lab 9,2,18,16,Tue (3:00 - 5:00 PM)
-CST308,AI-Lab,Artificial Intelligence Lab (AI-Lab),TCH-001,Mr. Ashok. K / Mr. P Lakshmiramana / Mr. Devanolla Suresh,Lab 9,2,20,19,Wed (9:10 AM - 12:10 PM)
-CST309,SE-Lab,Software Engineering Lab (SE-Lab),TCH-003,Mr. Abdul Jaleel D / Mr. Naveen V / Dr. Manikandan R,Lab 9,2,19,18,Fri (9:10 AM - 12:10 PM)
+23CST107,23CST107,Automata Theory and Compiler Design,TCH-ARUL,Mr. L. Arul Jayaprakash,NPN106,3,14,12,"Mon, Tue, Thu"
+23CST108,23CST108,Artificial Intelligence,TCH-ASHOK,Mr. Ashok Kambaluru,NPN106,3,15,9,"Mon, Tue, Fri"
+23CST109,23CST109,Software Engineering,TCH-JALEEL,Mr. Abdul Jaleel D,NPN106,3,15,10,"Mon, Tue, Thu"
+23PHY102,23PHY102,Introduction to Quantum Technologies and Applications,TCH-SREEDHAR,Dr. Sunku Sreedhar,NPN106,3,16,7,"Mon, Tue, Thu"
+23ENG901,23ENG901,Technical Paper Writing and IPR,TCH-FIROZE,Mr. Pathan Firoze Khan,NPN106,2,9,2,"Wed, Sat"
+23CST4M01,23CST4M01,Privacy and Security in Online Social Media,TCH-SURESH,Mr. Devanolla Suresh,NPN106,3,13,8,"Wed, Fri, Sat"
+23CST4M02,23CST4M02,Introduction to Internet of Things,TCH-SAIKIRAN,Mr. Sai Kiran N,NPN106,3,14,7,"Wed, Fri, Sat"
+23CST205,23CST205,Artificial Intelligence Laboratory,TCH-ASHOK,Mr. Ashok Kambaluru,Lab 9,1.5,18,12,"Wed (09:00 AM - 12:00 PM)"
+23CST206,23CST206,Software Engineering Laboratory,TCH-JALEEL,Mr. Abdul Jaleel D,Lab 9,1.5,15,3,"Fri (09:00 AM - 12:00 PM)"
+APPTITUDE,APPTITUDE,Quantitative Aptitude,TCH-CHOLLANGI,Mr. Chollangi Venkataramu,NPN106,1,4,3,"Thu (12:00 PM - 01:00 PM)"
+VERBAL,VERBAL,Verbal Ability Training,TCH-RAMA,Mr. Rama Mohan T,NPN106,1,4,2,"Fri (04:00 PM - 05:00 PM)"

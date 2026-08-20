@@ -1,0 +1,154 @@
+{
+windowPanel :{
+            modal:true
+    },
+formPanel :{ 
+            bodyStyle: 'padding:5px 5px 0',
+            labelAlign: 'left',
+            labelStyle: 'font-weight:bold; font-color:red',
+            defaults: {
+                    border: false,
+                    bodyPadding: 4,
+                }, 
+                            width: '98%',
+                height: '100%',
+                labelWidth: 150,
+                        renderTo: 'dynacontent',
+            items: [
+                            {
+                    xtype:'fieldset',
+                    defaultType: 'displayfield',
+                    items :[{
+                                xtype: 'hiddenfield',
+                                name: 'studnt.id',
+                                value : '22612'
+
+                            }, 
+                            {
+                                xtype: 'fieldset',
+                                title:'Profile',
+                                width: "100%",
+                                layout : 'column',
+                                items: [ 
+                                         {
+                                           xtype: 'fieldset',
+                                           layout : 'anchor',
+                                           columnWidth:.7,
+                                           style:{float:'left',border: 'none'},
+                                           defaultType: 'displayfield',
+                                           items:[
+                                           
+                                                        {
+                                                                fieldLabel: 'Name',
+                                                                name: 'studnt.firstName',
+                                                                value: 'NATARAJANBMOHAN'
+                                                        },
+                                                        {
+                                                                fieldLabel: 'Register No' ,
+                                                                name: 'studnt.usn',
+                                                                value: '24691A2899'
+                                                        },
+                                                        {
+                                                                fieldLabel: 'Branch',
+                                                                name: 'studnt.branch',
+                                                                value: 'Computer Science and Technology'
+                                                        },
+                                                                                                                {
+                                                                fieldLabel: 'Batch',
+                                                                name: 'studnt.currentBatchYear',
+                                                                value: '2024'
+                                                        },
+                                                        {
+                                                                fieldLabel: 'Communication Address',
+                                                                name: 'studnt.studentProfile.localAddress',
+                                                                value: 'kothainlurangareddycolony'
+                                                        },
+                                                        {
+                                                                fieldLabel: 'Permanent Address',
+                                                                name: 'studnt.studentProfile.permanentAddress',
+                                                                value: 'kothainlurangareddycolonymadanapalle'
+                                                        }
+                                                ]
+                                          },
+                                          {
+                                             xtype: 'fieldset',
+                                             style:{float:'right',border: 'none'},
+                                             columnWidth:.3,
+                                             items:[
+                                                        {
+                                                                xtype:'image',
+                                                                id:'profileImage',
+                                                                cls:'profDetails',
+                                                                height:130,
+                                                                width:'auto',
+                                                                anchor:'100%',
+                                                                                                                                    src:'./gemsonline-student/loadImage.action?'
+                                                                                                                        }
+                                                    ]
+                                          }
+                                       ]
+                            },
+                            {
+                                xtype: 'fieldset',
+                                title : 'Email IDs',
+                                items: [ 
+                                        {
+                                            xtype: 'displayfield',
+                                            id:"email",
+                                            fieldLabel: 'E-mail',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF">24691A2899@mits.ac.in</span>'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            id:'alternateEmail',
+                                            fieldLabel: 'Alternative E-mail',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF"></span>'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Mobile No',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF">9866627599</span>',
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Father Email ID',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF"></span>'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Father Mobile No',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF">9494366931</span>'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Mother Email ID',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF"></span>'
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            fieldLabel: 'Mobile Mobile No',
+                                            value: '<span style = "font-size:12px; font-weight: bolder; color:#013ADF">8919891723</span>'
+                                        }
+                                                                                ,{
+                                            xtype: 'button',
+                                            text: 'Edit',
+                                            width:75,
+                                            height:20,
+                                            margin : '0 0 0 20',
+                                            handler: Advaya.App.Parent.instance.processForm,
+                                            params:{
+                                                    inst:Advaya.Gms.Student.instance,
+                                                    action:"loadProfileWindow", 
+                                                    responseHandler:"setProfileWindow",
+                                                    req:"./gemsonline-student/profile.action?actionType=edit&responseType=profile"
+                                            }
+                                        }
+                                                                            ]
+                          }
+                        ]
+
+                }
+                
+            ],
+            }
+}

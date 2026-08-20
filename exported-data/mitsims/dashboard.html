@@ -1,0 +1,1459 @@
+{
+windowPanel :{
+                modal:true
+             },
+            formPanel :{ 
+                            bodyStyle: 'padding:5px 5px 0',
+                            labelAlign: 'left',
+                            labelStyle: 'font-weight:bold; font-color:red',
+                            defaults: {
+                                        border: false,
+                                        bodyPadding: 4,
+                                      }, 
+                             height: 500,
+                                    renderTo: 'dynacontent',
+                                    items: [
+                                               {
+                                                xtype:'fieldset',
+                                                layout : 'column',
+                                                height: 34,
+                                                style:{padding:0,border:0},
+                                                items:[
+                                                        {
+                                                            xtype:'button',
+                                                            cls:'studentDashboardBtn',
+                                                            width : 160,
+                                                            text:'<span style = "font-size:12px; font-weight: bolder; color:#FFFFFF">Attendance</span>',
+                                                            id: 'semActivity',
+                                                            handler:Advaya.Gms.Student.handler.showFields,
+                                                                                                                        params:{
+                                                                        label:'SemesterActivity'
+                                                                  }
+                                                        },
+                                                        {
+                                                            xtype:'button',
+                                                            cls:'studentDashboardBtn',
+                                                            width : 160,
+                                                            text:'<span style = "font-size:12px; font-weight: bolder; color:#FFFFFF">Assessment Marks</span>',
+                                                            id: 'assessmentMarks',
+                                                            handler:Advaya.Gms.Student.handler.showFields,
+                                                                                                                                                                                      params:{
+                                                                   rerq:'', 
+                                                                   label:'AssessmentMark',
+                                                                   req:'./gemsonline-student/getAssessmentMarks.action?&'
+                                                                  }
+                                                        },
+                                                        {
+                                                            xtype:'button',
+                                                            cls:'studentDashboardBtn',
+                                                            width : 160,
+                                                            text:'<span style = "font-size:12px; font-weight: bolder; color:#FFFFFF">Time Table</span>',
+                                                            id: 'tmeTable',
+                                                            handler:Advaya.Gms.Student.handler.showFields,
+                                                                                                                        params:{
+                                                                        label:'TimeTable'
+                                                                  }
+                                                        },
+                                                        {
+                                                            xtype:'button',
+                                                            cls:'studentDashboardBtn',
+                                                            width : 160,
+                                                            id: 'subjDetails',
+                                                            autoScroll:true,
+                                                            text:'<span style = "font-size:12px; font-weight: bolder; color:#FFFFFF">Subject Details</span>',
+                                                            handler:Advaya.Gms.Student.handler.showFields,
+                                                                                                                        params:{
+                                                                        label:'SubDetails'
+                                                                  }
+                                                        }
+                                                   
+                                                        
+                                                      ]
+                                               },
+                                               {
+                                                 xtype:'fieldset',
+                                                 id:'timetableData',
+                                                 height:450,
+                                                 autoScroll:true,
+                                                                                                  hidden:true
+                                                                                                },
+                                               {
+                                                 xtype:'fieldset',
+                                                 id:'SubDetails',
+                                                                                                  hidden:true,
+                                                                                                  autoScroll:true,
+                                                 height:450,
+                                                 items:[
+                                                              {
+                                                                 xtype : 'fieldset',
+                                                                 layout:'anchor',
+                                                                 anchor:'100%',
+                                                                  padding: '0 0 0 4',
+                                                                  border: false,
+                                                                  componentCls: 'bottom-border-header',
+                                                                  defaults : {
+                                                                        labelWidth : 50,
+                                                                        labelStyle : "background  : none",
+                                                                        style:{ float:'left'}
+                                                                        },
+                                                                        items:[
+                                                                                {
+                                                                                    xtype: 'displayfield',
+                                                                                    margin:'10 0 0 0',
+                                                                                    anchor:'5%',
+                                                                                    value:'<span style="color:blue;font-size:12px;"><b>S.NO</b></span>'
+                                                                                }
+                                                                                ,{
+                                                                                    xtype: 'displayfield',
+                                                                                    margin: '10 0 0 0',
+                                                                                    anchor:'12%',
+                                                                                    value: '<span style="color:blue;font-size:12px;"><b>CODE</b></span>'
+                                                                                },
+                                                                                {
+                                                                                    xtype: 'displayfield',
+                                                                                    margin: '10 0 0 0',
+                                                                                    anchor:'28%',
+                                                                                    value: '<span style="color:blue;font-size:12px;"><b>SUBJECT</b></span>'
+                                                                                },
+                                                                                {
+                                                                                    xtype: 'displayfield',
+                                                                                    margin: '10 0 0 0',
+                                                                                    anchor:'28%',
+                                                                                    value: '<span style="color:blue;font-size:12px;"><b>FACULTY</b></span>'
+                                                                                }
+                                                                                                                                                           
+                                                                                ,{
+                                                                                    xtype: 'displayfield',
+                                                                                    margin: '10 0 0 0',
+                                                                                    anchor:'15%',
+                                                                                    value: '<span style="color:blue;font-size:12px;"><b>THEORY CREDITS</b></span>'
+                                                                                },
+                                                                                {
+                                                                                    xtype: 'displayfield',
+                                                                                    margin: '10 0 0 6',
+                                                                                    anchor:'11%',
+                                                                                    value: '<span style="color:blue;font-size:12px;"><b>LAB CREDITS</b></span>'
+                                                                                }
+                                                                                                                                                            
+                                                                               ]
+                                                            },
+                                                                                                                                                                                               
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">1</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">VERBAL</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">VERBAL </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> RAMA</br>Email:<a href="mailto:ramamohant@mits.ac.in">ramamohant@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  0.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">2</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">APPTITUDE</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">APPTITUDE </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> CHOLLANGI</br>Email:<a href="mailto:venkataramuch@mits.ac.in">venkataramuch@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  0.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">3</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23PHY102</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">INTRODUCTION TO QUANTUM TECHNOLOGIES AND APPLICATIONS </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> SREEDHAR</br>Email:<a href="mailto:drsreedhars@mits.ac.in">drsreedhars@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  3.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">4</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23ENG901</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">TECHNICAL PAPER WRITING AND IPR </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> FIROZE KHAN</br>Email:<a href="mailto:firozekhanp@mits.ac.in">firozekhanp@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  0.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">5</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST107</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">AUTOMATA THEORY AND COMPILER DESIGN </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> ARUL JAYAPRAKASH</br>Email:<a href="mailto:aruljayaprakashl@mits.ac.in">aruljayaprakashl@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  3.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">6</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST108</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">ARTIFICIAL INTELLIGENCE </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> ASHOK</br>Email:<a href="mailto:ashokkambaluru@mits.ac.in">ashokkambaluru@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  3.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">7</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST109	</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">SOFTWARE ENGINEERING </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> ABDUL JALEEL </br>Email:<a href="mailto:abduljaleeld@mits.ac.in">abduljaleeld@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  3.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">8</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST205</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">ARTIFICIAL INTELLIGENCE LABORATORY </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> ASHOK</br>Email:<a href="mailto:ashokkambaluru@mits.ac.in">ashokkambaluru@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  0.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  1.5 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">9</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST206</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">SOFTWARE ENGINEERING LABORATORY </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> ABDUL JALEEL </br>Email:<a href="mailto:abduljaleeld@mits.ac.in">abduljaleeld@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  0.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  1.5 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">10</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST4M01</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">PRIVACY AND SECURITY IN ONLINE SOCIAL MEDIA </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> SURESH</br>Email:<a href="mailto:sureshd@mits.ac.in">sureshd@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  3.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                ,
+                                                                   {
+                                                                         xtype : 'fieldset',
+                                                                         layout:'anchor',
+                                                                         anchor:'100%',
+                                                                         padding: '0 0 0 4',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 50,
+                                                                            style:{ float:'left'},
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                     {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'4%',
+                                                                                        value : '<span style = "font-size:12px;padding: 9px">11</span>'
+                                                                                    },                                                                       
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'13%',
+                                                                                        value: '<span style = "font-size:12px">23CST4M02</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px">INTRODUCTION TO INTERNET OF THINGS </span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        anchor:'28%',
+                                                                                        value: '<span style = "font-size:12px"> SAIKIRAN</br>Email:<a href="mailto:saikirann@mits.ac.in">saikirann@mits.ac.in</a></br>Ext No: - </span>'
+                                                                                    }
+                                                                                                                                                                        
+                                                                                        ,{
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'15%',
+                                                                                            margin: '10 0 10 0',
+                                                                                            value: '<span style = "font-size:12px;padding: 49px">  3.0 </span>'
+                                                                                        },
+                                                                                        {
+                                                                                            xtype: 'displayfield',
+                                                                                            anchor:'11%',
+                                                                                            margin: '10 0 10 6',
+                                                                                            value: '<span style = "font-size:12px;padding: 44px">  0.0 </span>'
+                                                                                        }
+                                                                                                                                                                            
+                                                                               ]
+                                                                      }
+                                                                                                                                                                                                                                                                                       
+                                                                 ]
+                                               },
+                                               {
+                                                    xtype:'fieldset',
+                                                    id:'semesterActivity',
+                                                    autoScroll:true,
+                                                    title:'Semester Activity for-III YEAR I SEMESTER - REGULAR ',
+                                                    layout : 'anchor',
+                                                    defaults: { anchor : '100%'},
+                                                                                                        defaultType: 'displayfield',
+                                                    height:450,
+                                                    items :[
+                                                              
+                                                            {
+                                                                 xtype : 'fieldset',
+                                                                 layout : 'column',
+                                                                  padding: '0 0 0 25',
+                                                                  border: false,
+                                                                  componentCls: 'bottom-border-header',
+                                                                  defaults : {
+                                                                        labelWidth : 150,
+                                                                        labelStyle : "background  : none"
+                                                                    },
+                                                                  items:[
+                                                                            {
+                                                                                xtype: 'displayfield',
+                                                                                margin:'5 0 0 0',
+                                                                                width : 50,
+                                                                                value:'<span style="color:blue;font-size:12px;"><b>S.NO</b></span>'
+                                                                            },
+                                                                            {
+                                                                                xtype: 'displayfield',
+                                                                                margin:'5 0 0 0',
+                                                                                width : 150,
+                                                                                value: '<span style="color:blue;font-size:12px;"><b>SUBJECT CODE</b></span>'
+                                                                            },
+                                                                                                                                                        {
+                                                                                xtype: 'displayfield',
+                                                                                margin:'5 0 0 0',
+                                                                                width : 200,
+                                                                                value: '<span style="color:blue;font-size:12px;"><b>CLASSES ATTENDED</b></span>'
+                                                                            },
+                                                                                                                                                                                                                                    {
+                                                                                xtype: 'displayfield',
+                                                                                margin:'5 0 0 0',
+                                                                                width : 200,
+                                                                                value: '<span style="color:blue;font-size:12px;"><b>TOTAL CONDUCTED</b></span>'
+                                                                            },
+                                                                                                                                                                                                                                    {
+                                                                                xtype: 'displayfield',
+                                                                                margin:'5 0 0 0',
+                                                                                width : 200,
+                                                                                value: '<span style="color:blue;font-size:12px;"><b>ATTENDANCE %</b></span>'
+                                                                            }
+                                                                       ]
+                                                                },
+                                                                                                                                                                                                      
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">1</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">VERBAL</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 2 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  4 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FF0000; padding: 37px;">  50.0 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">2</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">APPTITUDE</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 3 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  4 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#0040FF; padding: 37px;">  75.0 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">3</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23PHY102</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 7 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  16 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FF0000; padding: 37px;">  43.75 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">4</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23ENG901</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 2 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  9 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FF0000; padding: 37px;">  22.22 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">5</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST107</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 12 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  14 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#04B404; padding: 37px;">  85.71 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">6</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST108</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 9 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  15 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FFBF00; padding: 37px;">  60.0 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">7</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST109	</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 10 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  15 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FFBF00; padding: 37px;">  66.67 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">8</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST205</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 12 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  18 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FFBF00; padding: 37px;">  66.67 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">9</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST206</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 3 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  15 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FF0000; padding: 37px;">  20.0 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">10</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST4M01</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 8 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  13 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FFBF00; padding: 37px;">  61.54 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                     ,
+                                                                     {
+                                                                         xtype : 'fieldset',
+                                                                         layout : 'column',
+                                                                         padding: '0 0 0 25',
+                                                                         componentCls: 'bottom-border',
+                                                                         defaults : {
+                                                                            labelWidth : 150,
+                                                                            labelStyle : "background  : none"
+                                                                         },
+                                                                         margin:'-6 0 0 0',
+                                                                         items:[
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 50,
+                                                                                        value : '<span style = "font-size:12px;padding: 9px;">11</span>'
+                                                                                    },
+                                                                                    {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 150,
+                                                                                        value: '<span style = "font-size:12px">23CST4M02</span>'
+                                                                                    },
+                                                                                                                                                                        {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width : 200,
+                                                                                        value: '<span style = "font-size:12px;padding: 55px;"> 7 </span>'
+                                                                                    },
+                                                                                                                                                                                                                                                            {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                                                                                                                    value: '<span style = "font-size:12px;padding: 40px;">  14 </span>'
+                                                                                                                                                                            },
+                                                                                                                                                                                                                                                                                                                                                {
+                                                                                        xtype: 'displayfield',
+                                                                                        margin: '10 0 10 0',
+                                                                                        width :200,
+                                                                                        value: '<span style = "font-size:12px;color:#FF0000; padding: 37px;">  50.0 </span>'
+                                                                                    }
+                                                                                                                                                                   ]
+                                                                      }
+                                                                                                                                                                                                ,{
+                                                                    xtype : 'fieldset',
+                                                                    layout:'anchor',
+                                                                    border: false,
+                                                                    items:[
+                                                                                                                                                                {
+                                                                                    xtype: 'displayfield',
+                                                                                    margin: '10 0 10 0',
+                                                                                    anchor:'90%',
+                                                                                    value : '<span style = "font-size:12px;padding: 9px;font-weight:bold">Note :</span> <span style="color:green;font-size:12px;padding: 9px;"> Green : 100%-85% </span>  <span style="color:blue;font-size:12px;padding: 9px;">Blue : 84%-70%</span><span style="color:orange;font-size:12px;padding: 9px;">Orange : 69%-59%</span><span style="color:Red;font-size:12px;padding: 9px;">Red : 58%-0%</span>'
+                                                                                }
+                                                                                                                                                                   
+                                                                                                                                                          ]
+                                                                }
+                                                                                                                          ]
+                                                  },
+                                                  {
+                                                    xtype:'fieldset',
+                                                    id:'attnFldSet',
+                                                    padding:'0px',
+                                                    height:450,
+                                                    autoScroll:true,
+                                                    hidden:true
+                                                  },
+                                                  {
+                                                    xtype:'fieldset',
+                                                    id:'marksFldSet',
+                                                    padding:'0px',
+                                                    height:450,
+                                                    width:'99%',
+                                                    autoScroll:true,
+                                                                                                        hidden:true
+                                                                                                      }
+                                            ]
+                        },
+
+tableData :{
+                id:'timeTableTable',
+                componentCls:"timeTableTable",
+                renderTo:'dynacontent',
+                                height:"92%",
+                autoScroll:true,
+                coldefs :[
+                            { dataIndex: "days", text:"", align:'center', width:30, sortable:false, fixed:true},
+                                                                                        
+                                    { dataIndex: "Period1", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   09:00 AM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period2", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   10:00 AM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period3", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   11:00 AM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period4", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   12:00 PM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period5", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   02:00 PM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period6", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   03:00 PM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period7", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   04:00 PM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                                            ,
+                                    { dataIndex: "Period8", text: '<span style="color:#007248;font-weight:bold;font-size:12px">   05:00 PM  </span>', align:'center',  sortable:false, fixed:true}
+                                                                            ],
+                schema : {
+                    fields : [
+
+                            "days",
+                                                                                        
+                                    "Period1"
+                                                                                            ,
+                                    "Period2"
+                                                                                            ,
+                                    "Period3"
+                                                                                            ,
+                                    "Period4"
+                                                                                            ,
+                                    "Period5"
+                                                                                            ,
+                                    "Period6"
+                                                                                            ,
+                                    "Period7"
+                                                                                            ,
+                                    "Period8"
+                                                                                    ]
+                },
+                                   records : [
+                                                                
+                                {
+                                                                                                                                                                    'days':'<span style="color:#007248;font-weight:bold;font-size:12px">MON</span>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ,"Period1" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97051,"view",null)> <span style="color:#161D3F;font-family:caption">23CST108</span></br> <span style="color:#161D3F;font-family:caption">  ASHOK </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period2" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97053,"view",null)> <span style="color:#161D3F;font-family:caption">23CST107</span></br> <span style="color:#161D3F;font-family:caption">  ARUL JAYAPRAKASH </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period3" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97055,"view",null)> <span style="color:#161D3F;font-family:caption">23PHY102</span></br> <span style="color:#161D3F;font-family:caption">  SREEDHAR </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period4" :''
+                                                                                                                                                                                                                                                                                                                                                                        ,"Period5" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97056,"view",null)> <span style="color:#161D3F;font-family:caption">23CST109	</span></br> <span style="color:#161D3F;font-family:caption">  ABDUL JALEEL  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period6" :''
+                                                                                                                                                                                                                                                    ,"Period7" :''
+                                                                                                                                                                                                                                                    ,"Period8" :''
+                                                                                                                                    
+                                }
+                                                                                                ,
+                                {
+                                                                                                                                                                                                            'days':'<span style="color:#007248;font-weight:bold;font-size:12px">TUE</span>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ,"Period1" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97057,"view",null)> <span style="color:#161D3F;font-family:caption">23CST107</span></br> <span style="color:#161D3F;font-family:caption">  ARUL JAYAPRAKASH </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period2" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97058,"view",null)> <span style="color:#161D3F;font-family:caption">23CST109	</span></br> <span style="color:#161D3F;font-family:caption">  ABDUL JALEEL  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period3" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97059,"view",null)> <span style="color:#161D3F;font-family:caption">23CST108</span></br> <span style="color:#161D3F;font-family:caption">  ASHOK </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period4" :''
+                                                                                                                                                                                                                                                                                                                                                                        ,"Period5" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97060,"view",null)> <span style="color:#161D3F;font-family:caption">23PHY102</span></br> <span style="color:#161D3F;font-family:caption">  SREEDHAR </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period6" :''
+                                                                                                                                                                                                                                                    ,"Period7" :''
+                                                                                                                                                                                                                                                    ,"Period8" :''
+                                                                                                                                    
+                                }
+                                                                                                ,
+                                {
+                                                                                                                                                                                                                                                    'days':'<span style="color:#007248;font-weight:bold;font-size:12px">WED</span>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ,"Period1" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97063,"view",null)> <span style="color:#161D3F;font-family:caption">23CST205</span></br> <span style="color:#161D3F;font-family:caption">  ASHOK </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period2" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97064,"view",null)> <span style="color:#161D3F;font-family:caption">23CST205</span></br> <span style="color:#161D3F;font-family:caption">  ASHOK </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period3" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97065,"view",null)> <span style="color:#161D3F;font-family:caption">23CST205</span></br> <span style="color:#161D3F;font-family:caption">  ASHOK </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period4" :''
+                                                                                                                                                                                                                                                                                                                                                                        ,"Period5" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97066,"view",null)> <span style="color:#161D3F;font-family:caption">23CST4M02</span></br> <span style="color:#161D3F;font-family:caption">  SAIKIRAN </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period6" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97068,"view",null)> <span style="color:#161D3F;font-family:caption">23CST4M01</span></br> <span style="color:#161D3F;font-family:caption">  SURESH </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period7" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97069,"view",null)> <span style="color:#161D3F;font-family:caption">23ENG901</span></br> <span style="color:#161D3F;font-family:caption">  FIROZE KHAN </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period8" :''
+                                                                                                                                    
+                                }
+                                                                                                ,
+                                {
+                                                                                                                                                                                                                                                                                            'days':'<span style="color:#007248;font-weight:bold;font-size:12px">THU</span>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ,"Period1" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97070,"view",null)> <span style="color:#161D3F;font-family:caption">23PHY102</span></br> <span style="color:#161D3F;font-family:caption">  SREEDHAR </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period2" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,98648,"view",null)> <span style="color:#161D3F;font-family:caption">23CST109	</span></br> <span style="color:#161D3F;font-family:caption">  ABDUL JALEEL  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period3" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97072,"view",null)> <span style="color:#161D3F;font-family:caption">23CST107</span></br> <span style="color:#161D3F;font-family:caption">  ARUL JAYAPRAKASH </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period4" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,98545,"view",null)> <span style="color:#161D3F;font-family:caption">APPTITUDE</span></br> <span style="color:#161D3F;font-family:caption">  CHOLLANGI </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period5" :''
+                                                                                                                                                                                                                                                                                                                                                                        ,"Period6" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,98948,"view",null)> <span style="color:#161D3F;font-family:caption">23cst605</span></br> <span style="color:#161D3F;font-family:caption">  V  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period7" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,98949,"view",null)> <span style="color:#161D3F;font-family:caption">23cst605</span></br> <span style="color:#161D3F;font-family:caption">  V  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period8" :''
+                                                                                                                                    
+                                }
+                                                                                                ,
+                                {
+                                                                                                                                                                                                                                                                                                                                    'days':'<span style="color:#007248;font-weight:bold;font-size:12px">FRI</span>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                ,"Period1" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97075,"view",null)> <span style="color:#161D3F;font-family:caption">23CST206</span></br> <span style="color:#161D3F;font-family:caption">  ABDUL JALEEL  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period2" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97076,"view",null)> <span style="color:#161D3F;font-family:caption">23CST206</span></br> <span style="color:#161D3F;font-family:caption">  ABDUL JALEEL  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period3" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97077,"view",null)> <span style="color:#161D3F;font-family:caption">23CST206</span></br> <span style="color:#161D3F;font-family:caption">  ABDUL JALEEL  </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period4" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97078,"view",null)> <span style="color:#161D3F;font-family:caption">23CST4M02</span></br> <span style="color:#161D3F;font-family:caption">  SAIKIRAN </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period5" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97079,"view",null)> <span style="color:#161D3F;font-family:caption">23CST4M01</span></br> <span style="color:#161D3F;font-family:caption">  SURESH </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period6" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97080,"view",null)> <span style="color:#161D3F;font-family:caption">23CST108</span></br> <span style="color:#161D3F;font-family:caption">  ASHOK </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period7" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97081,"view",null)> <span style="color:#161D3F;font-family:caption">VERBAL</span></br> <span style="color:#161D3F;font-family:caption">  RAMA </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period8" :''
+                                                                                                                                    
+                                }
+                                                                                                ,
+                                {
+                                                                                                                                                                                                                                                                                                                                                                            'days':'<span style="color:#007248;font-weight:bold;font-size:12px">SAT</span>'
+                                                                                                                                                                                                                                                                                                                                                                                                        ,"Period1" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97082,"view",null)> <span style="color:#161D3F;font-family:caption">23CST4M02</span></br> <span style="color:#161D3F;font-family:caption">  SAIKIRAN </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period2" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97083,"view",null)> <span style="color:#161D3F;font-family:caption">23CST4M01</span></br> <span style="color:#161D3F;font-family:caption">  SURESH </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ,"Period3" : Ext.String.format('<a href="#"  onmouseover=Advaya.Gms.Student.handler.ttWindow(this,97084,"view",null)> <span style="color:#161D3F;font-family:caption">23ENG901</span></br> <span style="color:#161D3F;font-family:caption">  FIROZE KHAN </span></br></a> <span style="color:#786D5F;font-size:10px;"></span><span style="color:#786D5F;font-size:10px;margin-left:30%"></span>')
+                                                                                                                                                                                                                                                                                                                                                                  ,"Period4" :''
+                                                                                                                                                                                                                                                    ,"Period5" :''
+                                                                                                                                                                                                                                                    ,"Period6" :''
+                                                                                                                                                                                                                                                    ,"Period7" :''
+                                                                                                                                                                                                                                                    ,"Period8" :''
+                                                                                                                                    
+                                }
+                                                                                             ]
+            },
+attendanceTable:{
+        id:"stuAttendncTbl",
+        autoScroll:true,
+        width:"90%",
+        height:"100%",
+        componentCls:"attReportGrid",
+        renderTo:'dynacontent',
+        coldefs :[
+        Ext.create('Ext.grid.RowNumberer',{locked:true, width:30}),
+        { dataIndex: "subjectName", text: 'SUBJECT NAME' , width:150, sortable:false , locked:true},
+        { dataIndex: "subjectCode", text: "CODE", locked:true, width:80},
+                        ],
+        schema :
+            {
+                fields : ["id","subjectName","subjectCode",
+                                                                                 ]
+             },
+                     records:[
+                     ]     
+}
+  }
