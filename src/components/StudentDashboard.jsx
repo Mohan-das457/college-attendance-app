@@ -164,6 +164,7 @@ export const StudentDashboard = () => {
   const { 
     courses, 
     students, 
+    activeStudent,
     timetable, 
     leaves, 
     attendanceHistory,
@@ -177,7 +178,7 @@ export const StudentDashboard = () => {
     raiseDispute
   } = useAttendance();
 
-  const student = students[0];
+  const student = activeStudent || students[0];
   const [activeTab, setActiveTab] = useState('overview');
   const [activeCourseForCalc, setActiveCourseForCalc] = useState(null);
   const [showCalcModal, setShowCalcModal] = useState(false);

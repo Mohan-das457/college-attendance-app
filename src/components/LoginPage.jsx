@@ -74,6 +74,7 @@ const AnimatedInput = ({ icon: Icon, label, type, value, onChange, placeholder, 
           placeholder={placeholder}
           required
           autoFocus={autoFocus}
+          autoComplete="off"
           className="input-field"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
@@ -176,7 +177,7 @@ export default function LoginPage({ onLogin }) {
   const handleTeacherSelect = (id) => {
     setSelectedTeacherId(id);
     const t = teachers.find(t => t.id === id);
-    if (t) { setEmail(t.email); setPassword(t.password); }
+    if (t) { setEmail(t.email); setPassword(''); }
     setError('');
   };
 
@@ -473,14 +474,20 @@ export default function LoginPage({ onLogin }) {
               </div>
             )}
 
-            {/* Email */}
+            {/* Email / Roll Number */}
             <AnimatedInput
               icon={Mail}
-              label="Email Address"
-              type="email"
+              label={selectedRole === 'student' ? "Roll Number / College Email" : "Institutional Email"}
+              type="text"
               value={email}
               onChange={e => { setEmail(e.target.value); setError(''); }}
-              placeholder="Enter your institutional email"
+              placeholder={
+                selectedRole === 'student' 
+                  ? "Enter Roll No (e.g. 24691A2899) or email" 
+                  : selectedRole === 'teacher' 
+                  ? "Enter faculty email (e.g. s.jansi@mits.ac.in)" 
+                  : "Enter admin email (admin@mits.edu)"
+              }
               autoFocus={selectedRole !== 'teacher'}
             />
 
@@ -509,7 +516,11 @@ export default function LoginPage({ onLogin }) {
               type={showPass ? 'text' : 'password'}
               value={password}
               onChange={e => { setPassword(e.target.value); setError(''); }}
-              placeholder="Enter your password"
+              placeholder={
+                selectedRole === 'student' 
+                  ? "Enter your password (default: your roll no)" 
+                  : "Enter your secure password"
+              }
               suffix={
                 <button
                   type="button"
@@ -550,68 +561,26 @@ export default function LoginPage({ onLogin }) {
               </div>
             )}
 
-            {/* Demo Credentials Panel */}
+            {/* Quick Helper Note */}
             <div style={{
-              background: 'rgba(0,0,0,0.2)',
+              background: 'rgba(0,0,0,0.15)',
               border: '1px solid rgba(255,255,255,0.05)',
-              borderRadius: 12,
-              padding: '12px 16px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 12,
+              borderRadius: 10,
+              padding: '10px 14px',
+              fontSize: '0.75rem',
+              color: 'var(--text-dim)',
+              lineHeight: 1.5,
+              textAlign: 'center',
             }}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', lineHeight: 1.7 }}>
-                {selectedRole === 'teacher' ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ fontSize: 14 }}>☝️</span>
-                    <span>Select name above to auto-fill</span>
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      <span style={{ opacity: 0.6 }}>Email: </span>
-                      <strong style={{ color: activeRoleData.color, fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-                        {DEMO[selectedRole].email}
-                      </strong>
-                    </div>
-                    <div>
-                      <span style={{ opacity: 0.6 }}>Pass: </span>
-                      <strong style={{ color: activeRoleData.color, fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-                        {DEMO[selectedRole].password}
-                      </strong>
-                    </div>
-                  </>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={fillDemo}
-                style={{
-                  background: `${activeRoleData.color}18`,
-                  color: activeRoleData.color,
-                  border: `1px solid ${activeRoleData.color}35`,
-                  padding: '6px 14px',
-                  borderRadius: 8,
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  fontFamily: 'var(--font-main)',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s ease',
-                  letterSpacing: '0.02em',
-                }}
-                onMouseEnter={e => {
-                  e.target.style.background = `${activeRoleData.color}30`;
-                  e.target.style.transform = 'scale(1.03)';
-                }}
-                onMouseLeave={e => {
-                  e.target.style.background = `${activeRoleData.color}18`;
-                  e.target.style.transform = 'scale(1)';
-                }}
-              >
-                ✨ Auto Fill
-              </button>
+              {selectedRole === 'student' && (
+                <span>💡 Log in with any enrolled Roll Number (e.g. <strong>24691A2899</strong>, <strong>24691A2895</strong>, etc.)</span>
+              )}
+              {selectedRole === 'teacher' && (
+                <span>💡 Select your faculty profile above or enter your departmental email.</span>
+              )}
+              {selectedRole === 'admin' && (
+                <span>🛡️ System Admin Access: Use institutional administrator credentials.</span>
+              )}
             </div>
 
             {/* Submit Button */}

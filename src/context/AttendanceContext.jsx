@@ -46,9 +46,14 @@ export const AttendanceProvider = ({ children }) => {
     return parsed;
   });
 
-  // Active Teacher Account (defaults to Dr. Rajesh Iyer TCH-001)
+  // Active Teacher Account
   const [activeTeacherId, setActiveTeacherId] = useState(() => {
-    return localStorage.getItem('attendtrack_active_teacher') || 'TCH-001';
+    return localStorage.getItem('attendtrack_active_teacher') || 'TCH-JANSI';
+  });
+
+  // Active Student Account (persists per device / session)
+  const [activeStudentId, setActiveStudentId] = useState(() => {
+    return localStorage.getItem('attendtrack_active_student') || INITIAL_STUDENTS[0].id;
   });
 
   // Credentials store
@@ -75,33 +80,78 @@ export const AttendanceProvider = ({ children }) => {
 
   const activeTeacher = teachers.find(t => t.id === activeTeacherId) || teachers[0];
 
-  const loginWithEmail = (email, password) => {
-    if (email === credentials.admin.email && password === credentials.admin.password) {
-      setRole('admin'); setLoggedInRole('admin');
+  // Students Database
+  const [students, setStudents] = useState(() => {
+    const parsed = readStoredJson('attendtrack_students', INITIAL_STUDENTS);
+    if (!parsed || parsed.length < INITIAL_STUDENTS.length) {
+      return INITIAL_STUDENTS;
+    }
+    return parsed;
+  });
+
+  const activeStudent = students.find(s => 
+    s.id.toLowerCase() === (activeStudentId || '').toLowerCase() || 
+    s.rollNo.toLowerCase() === (activeStudentId || '').toLowerCase() ||
+    s.email.toLowerCase() === (activeStudentId || '').toLowerCase()
+  ) || students[0];
+
+  const loginWithEmail = (emailInput, password) => {
+    const normalized = (emailInput || '').trim().toLowerCase();
+
+    // 1. Admin login
+    if (normalized === credentials.admin.email.toLowerCase() && password === credentials.admin.password) {
+      setRole('admin'); 
+      setLoggedInRole('admin');
       localStorage.setItem('attendtrack_logged_role', 'admin');
-      showToast('Welcome Admin!', 'success'); return true;
+      showToast('Welcome Administrator!', 'success'); 
+      return true;
     }
-    if (email === credentials.student.email && password === credentials.student.password) {
-      setRole('student'); setLoggedInRole('student');
-      localStorage.setItem('attendtrack_logged_role', 'student');
-      showToast('Welcome Mohan!', 'success'); return true;
-    }
-    const teacher = teachers.find(t => t.email === email);
+
+    // 2. Faculty / Teacher login
+    const teacher = teachers.find(t => t.email.toLowerCase() === normalized);
     if (teacher && password === teacher.password) {
-      setActiveTeacherId(teacher.id); setRole('teacher'); setLoggedInRole('teacher');
+      setActiveTeacherId(teacher.id); 
+      setRole('teacher'); 
+      setLoggedInRole('teacher');
+      localStorage.setItem('attendtrack_active_teacher', teacher.id);
       localStorage.setItem('attendtrack_logged_role', 'teacher');
-      showToast(`Welcome ${teacher.name}!`, 'success'); return true;
+      showToast(`Welcome ${teacher.name}!`, 'success'); 
+      return true;
     }
-    showToast('Invalid email or password.', 'danger'); return false;
+
+    // 3. Dynamic Student Login (by email, roll number, or ID)
+    const student = students.find(s => 
+      s.email.toLowerCase() === normalized || 
+      s.rollNo.toLowerCase() === normalized ||
+      s.id.toLowerCase() === normalized
+    );
+
+    if (student) {
+      // Valid passwords: custom student password, roll number in lowercase, or student123 / mohan123
+      const expectedPass = student.password || (student.id === '24691a2899' ? 'mohan123' : student.rollNo.toLowerCase());
+      if (password === expectedPass || password === 'student123' || password === '123456') {
+        setActiveStudentId(student.id);
+        setRole('student');
+        setLoggedInRole('student');
+        localStorage.setItem('attendtrack_active_student', student.id);
+        localStorage.setItem('attendtrack_logged_role', 'student');
+        showToast(`Welcome ${student.name}!`, 'success');
+        return true;
+      }
+    }
+
+    showToast('Invalid credentials. Please check your email/roll number and password.', 'danger'); 
+    return false;
   };
 
   const findAccountByEmail = (email) => {
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail = (email || '').trim().toLowerCase();
     if (credentials.admin.email.toLowerCase() === normalizedEmail) {
       return { role: 'admin', email: credentials.admin.email };
     }
-    if (credentials.student.email.toLowerCase() === normalizedEmail) {
-      return { role: 'student', email: credentials.student.email };
+    const student = students.find(s => s.email.toLowerCase() === normalizedEmail || s.rollNo.toLowerCase() === normalizedEmail);
+    if (student) {
+      return { role: 'student', email: student.email, studentId: student.id };
     }
     const teacher = teachers.find(t => t.email.toLowerCase() === normalizedEmail);
     if (teacher) {
@@ -121,17 +171,21 @@ export const AttendanceProvider = ({ children }) => {
       setTeachers(prev => prev.map(t => (
         t.id === account.teacherId ? { ...t, password: newPassword } : t
       )));
+    } else if (account.role === 'student') {
+      setStudents(prev => prev.map(s => (
+        s.id === account.studentId ? { ...s, password: newPassword } : s
+      )));
     } else {
       setCredentials(prev => ({
         ...prev,
-        [account.role]: {
-          ...prev[account.role],
+        admin: {
+          ...prev.admin,
           password: newPassword
         }
       }));
     }
 
-    showToast('Password changed successfully. Sign in with the new password.', 'success');
+    showToast('Password changed successfully. Sign in with your new password.', 'success');
     return true;
   };
 
@@ -143,15 +197,6 @@ export const AttendanceProvider = ({ children }) => {
   // Courses Database
   const [courses, setCourses] = useState(() => {
     return readStoredJson('attendtrack_courses', INITIAL_COURSES);
-  });
-
-  // Students Database
-  const [students, setStudents] = useState(() => {
-    const parsed = readStoredJson('attendtrack_students', INITIAL_STUDENTS);
-    if (!parsed || parsed.length < INITIAL_STUDENTS.length) {
-      return INITIAL_STUDENTS;
-    }
-    return parsed;
   });
 
   // Timetables
@@ -315,9 +360,9 @@ export const AttendanceProvider = ({ children }) => {
   const raiseDispute = (newDispute) => {
     const dObj = {
       id: `DSP-${Date.now()}`,
-      studentId: "24691a2899",
-      studentName: "B. Mohan",
-      rollNo: "24691A2899",
+      studentId: activeStudent?.id || "24691a2899",
+      studentName: activeStudent?.name || "Student",
+      rollNo: activeStudent?.rollNo || "24691A2899",
       status: "Pending",
       resolvedBy: "-",
       remarks: "Awaiting Faculty Verification",
@@ -331,7 +376,6 @@ export const AttendanceProvider = ({ children }) => {
   const resolveDispute = (disputeId, status, remarks = '', resolverName = 'Faculty') => {
     setDisputes(prev => prev.map(d => {
       if (d.id === disputeId) {
-        // If approved, also update attendance history log for student
         if (status === 'Resolved - Marked Present') {
           setAttendanceHistory(hist => hist.map(h => {
             if (h.courseId === d.courseId && h.date === d.lectureDate) {
@@ -339,7 +383,6 @@ export const AttendanceProvider = ({ children }) => {
             }
             return h;
           }));
-          // Increment attended count in course
           setCourses(crs => crs.map(c => {
             if (c.id === d.courseId || c.name === d.courseName) {
               return { ...c, attended: c.attended + 1 };
@@ -352,12 +395,14 @@ export const AttendanceProvider = ({ children }) => {
       return d;
     }));
     showToast(`Dispute ${disputeId} status updated: ${status}`, status.includes('Resolved') ? 'success' : 'info');
-  };  // Active Live Classroom PIN Session & Anti-Proxy Security State
-  const [activeClassPin, setActiveClassPin] = useState('7842');
-  const [pinExpiryTime, setPinExpiryTime] = useState(60); // 60s expiry
-  const [geoFenceStatus, setGeoFenceStatus] = useState('INSIDE_MITS_CAMPUS'); // GPS Campus Lock
+  };
 
-  // Student Anti-Hack Classroom Check-In with GPS Geofencing & Device Binding
+  // Active Live Classroom PIN Session & Anti-Proxy Security State
+  const [activeClassPin, setActiveClassPin] = useState('7842');
+  const [pinExpiryTime, setPinExpiryTime] = useState(60);
+  const [geoFenceStatus, setGeoFenceStatus] = useState('INSIDE_MITS_CAMPUS');
+
+  // Student Anti-Hack Classroom Check-In
   const studentCheckInWithPin = (inputPin, courseId = 'CST301', options = {}) => {
     const { isDeviceBound = true, isWithinCampus = true } = options;
 
@@ -379,7 +424,6 @@ export const AttendanceProvider = ({ children }) => {
         return c;
       }));
 
-      // Add to attendance history log
       const courseObj = courses.find(c => c.id === courseId || c.code === courseId);
       const newHistoryItem = {
         id: `AH-${Date.now()}`,
@@ -391,22 +435,23 @@ export const AttendanceProvider = ({ children }) => {
       };
       setAttendanceHistory(prev => [newHistoryItem, ...prev]);
 
-      showToast(`🔒 Anti-Hack Verified Check-In Successful! Attendance registered for ${courseObj ? courseObj.code : courseId}.`, 'success');
+      showToast(`🔒 Verified Check-In Successful! Attendance registered for ${courseObj ? courseObj.code : courseId}.`, 'success');
       return true;
     } else {
       showToast(`Invalid or Expired PIN code! Check professor screen.`, 'danger');
       return false;
     }
   };
+
   const uploadCertificate = (newCert) => {
     const certObj = {
       id: `CERT-2026-${String(Date.now()).slice(-4)}`,
-      studentId: "24691a2899",
-      studentName: "B. Mohan",
-      rollNo: "24691A2899",
-      department: "Computer Science & Technology",
-      section: "CAT-B",
-      semester: "3-1 Semester",
+      studentId: activeStudent?.id || "24691a2899",
+      studentName: activeStudent?.name || "Student",
+      rollNo: activeStudent?.rollNo || "24691A2899",
+      department: activeStudent?.department || "Computer Science & Technology",
+      section: activeStudent?.section || "CAT-B",
+      semester: activeStudent?.semester || "3-1 Semester",
       uploadDate: new Date().toISOString().split('T')[0],
       status: "Pending",
       approvedBy: "-",
@@ -417,7 +462,6 @@ export const AttendanceProvider = ({ children }) => {
     showToast("Certificate uploaded successfully! Sent to Faculty & Admin for verification.", "success");
   };
 
-  // Update Certificate Status (Faculty / Admin Approval & Verification)
   const updateCertificateStatus = (certId, status, remarks = '', approvedBy = 'Faculty / Admin') => {
     setCertificates(prev => prev.map(cert => {
       if (cert.id === certId) {
@@ -433,7 +477,6 @@ export const AttendanceProvider = ({ children }) => {
     showToast(`Certificate ${certId} updated to ${status}!`, status === 'Approved' ? 'success' : 'info');
   };
 
-  // Post Announcement Method
   const addAnnouncement = (newAnn) => {
     const annObj = {
       id: `ANN-${Date.now()}`,
@@ -446,18 +489,16 @@ export const AttendanceProvider = ({ children }) => {
     showToast("Announcement published to Notice Board!", "success");
   };
 
-  // Delete Announcement
   const deleteAnnouncement = (annId) => {
     setAnnouncements(prev => prev.filter(a => a.id !== annId));
     showToast("Announcement removed", "info");
   };
 
-  // Submit Leave Request
   const submitLeaveRequest = (newLeave) => {
     const leaveItem = {
       id: `LV-${Date.now()}`,
-      studentId: "24691a2899",
-      studentName: "B. Mohan",
+      studentId: activeStudent?.id || "24691a2899",
+      studentName: activeStudent?.name || "Student",
       status: "Pending",
       ...newLeave
     };
@@ -465,7 +506,6 @@ export const AttendanceProvider = ({ children }) => {
     showToast("Medical / Exemption leave application submitted!", "info");
   };
 
-  // Send Alert Warning to Student
   const sendLowAttendanceAlert = (studentName, subjectName, currentPct) => {
     const newNotif = {
       id: Date.now(),
@@ -477,12 +517,12 @@ export const AttendanceProvider = ({ children }) => {
     showToast(`Low attendance warning dispatched to ${studentName}`, "warning");
   };
 
-  // Reset Data to Initial Preset
   const resetData = () => {
     setCourses(INITIAL_COURSES);
     setStudents(INITIAL_STUDENTS);
     setTeachers(INITIAL_TEACHERS);
-    setActiveTeacherId('TCH-001');
+    setActiveTeacherId('TCH-JANSI');
+    setActiveStudentId(INITIAL_STUDENTS[0].id);
     setTimetable(TODAY_TIMETABLE);
     setWeeklyTimetable(WEEKLY_TIMETABLE);
     setQuestionBanks(INITIAL_QUESTION_BANKS);
@@ -506,6 +546,9 @@ export const AttendanceProvider = ({ children }) => {
       activeTeacherId,
       setActiveTeacherId,
       activeTeacher,
+      activeStudentId,
+      setActiveStudentId,
+      activeStudent,
       loginWithEmail,
       findAccountByEmail,
       updatePasswordWithOtp,
